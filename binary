@@ -1,0 +1,37 @@
+public class BinarySearch {
+
+	public static void main(String[] args) {
+
+		int data[] = { 3, 6, 7, 10, 34, 56, 60 };
+		int numberToFind = 10;
+		int first, last;
+		
+		static long binarysearch(int arr[], int num){
+		    int i;
+		    int length
+		    
+		    if(arr.length % 2 == 0){
+		    first=0;
+		    last=arr.length - 1;
+		    }
+	    	else{
+		        i=(arr.length-1)/2;
+		        if(arr[i]==num)
+		            return i;
+		        else if(num < arr[i]){
+		            
+		        }   
+		            
+		    }
+		    
+		}
+		
+		if(data.length % 2 == 0){
+		    first=0;
+		    last=data.length - 1;
+		}
+		else{
+		    
+		}
+	}
+}
