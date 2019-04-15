@@ -1,0 +1,40 @@
+package com.company;
+import java.io.Serializable;
+import java.util.ArrayList;
+
+public class Shop implements Serializable {
+    private String shopName;
+    private ArrayList <String> Catalog;
+
+
+    public Shop(){
+
+    }
+
+    public Shop(String shopName  ) {
+        this.shopName = shopName;
+        this.Catalog = new ArrayList<>();
+    }
+
+    public String getShopName() {
+        return shopName;
+    }
+
+    public void setShopName(String shopName) {
+        this.shopName = shopName;
+    }
+
+    public String getCatalog() {
+        return Catalog.toString();
+    }
+
+    public void setCatalog(String Item, String Unit, String Number, String Price, String Date) {
+        Catalog.add(Item);
+        Catalog.add(Unit);
+        Catalog.add(Number);
+        Catalog.add(Price);
+        Catalog.add(Date);
+    }
+
+}
+
