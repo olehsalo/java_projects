@@ -1,0 +1,195 @@
+package com.company;
+import java.beans.XMLDecoder;
+import java.beans.XMLEncoder;
+import java.io.*;
+import java.util.Locale;
+import java.util.Scanner;
+import java.util.ArrayList;
+public class Main {
+    public static void main(String[] args) {
+        Locale.setDefault(new Locale("uk", "UA"));
+        Scanner scan = new Scanner(System.in);
+        ArrayList<Shop> shops = new ArrayList<>();
+        byte command;
+        while(true){
+            System.out.println("Це меню, з яким ви можете працювати.\n");
+            System.out.println("1 - додати новий магазин");
+            System.out.println("2 - показати наявні магазини");
+            System.out.println("3 - видалити існуючий магазин");
+            System.out.println("4 - перейти до спеціального меню управління певним магазином");
+            System.out.println("5 - записати до XML файлу");
+            System.out.println("6 - зчитати з XML файлу");
+            System.out.println("7 - вихід");
+            System.out.print("\n");
+            System.out.print("Введіть будь-ласка номер бажаної команди: ");
+            command = scan.nextByte();
+            switch (command){
+                case 1:
+                    System.out.println("Додайте новий магазин. Для цього необхідно ввести його назву.");
+                    scan.nextLine();
+                    shops.add(new Shop(scan.nextLine()));
+                    System.out.println("Зазначте індекс доданого магазину ");
+                    int mainIndex = scan.nextInt();
+                    if(mainIndex > shops.size() || mainIndex < 0){
+                        System.err.println("Помилкове введення індексу!");
+                        break;
+                    }
+                    System.out.println("Тепер введіть кількість товарів в каталозі даного магазину");
+                    int itemsAmount = scan.nextInt();
+                    String item = scan.nextLine();
+                    String unit = scan.nextLine();
+                    String number = scan.nextLine();
+                    String price = scan.nextLine();
+                    String date = scan.nextLine();
+                    int j =0;
+                    for(j=0;j<itemsAmount;j++){
+                        item = scan.nextLine();
+                        unit = scan.nextLine();
+                        number = scan.nextLine();
+                        price = scan.nextLine();
+                        date = scan.nextLine();
+                        shops.get(mainIndex-1).setCatalog(item,unit,number,price,date);
+                    }
+                    System.out.println("Чудово, ваш контейнер тепер містить " + shops.size() + " (к-сть магазинів)");
+                    break;
+                case 2:
+                    System.out.println("Перегляньте всі наявні магазини");
+                    if(shops.size() == 0){
+                        System.err.println("Не знайдено жодного магазину");
+                        break;
+                    }
+                    System.out.println("Cписок усіх магазинів:\n");
+                    for (int i = 0; i < shops.size(); i++){
+                        System.out.println(shops.get(i).getShopName());
+                        System.out.print("\n");
+                    }
+                    break;
+                case 3:
+                    System.out.println("Тепер давайте видалим будь який з існуючих магазинів. Введіть його індекс");
+                    scan.nextLine();
+                    int delIndex = scan.nextInt();
+                    if(delIndex > shops.size() || delIndex < 1){
+                        System.err.println("Помилкове введення індексу!Спробуйте ще раз");
+                        break;
+                    }
+                    shops.remove(delIndex-1);
+                    System.out.println("Готово! Вибраний магазин видалений");
+                    break;
+                case 4:
+                    System.out.println("Введіть індекс магазину");
+                    scan.nextLine();
+                    int menuIndex = scan.nextInt();
+                    if( menuIndex > shops.size() || menuIndex < 1){
+                        System.err.println("Помилкове введення індексу! Спробуйте ще раз");
+                        break;
+                    }
+                    System.out.println("Виберіть бажану опцію \n");
+                    System.out.println("~~~|||~~~");
+                    System.out.println("1 - показати назву магазину");
+                    System.out.println("2 - змінити назву магазину");
+                    System.out.println("3 - показати каталог");
+                    System.out.println("4 - додати інші товари в каталог");
+                    System.out.println("5 - вийти з меню управління");
+                    System.out.println("~~~|||~~~");
+                    System.out.print("\n");
+                    scan.nextLine();
+                    System.out.print("Введіть опцію в це поле: ");
+                    byte task = scan.nextByte();
+                    switch (task){
+                        case 1:
+                            System.out.println(" Назва магазину - " + shops.get(menuIndex-1).getShopName());
+                            break;
+                        case 2:
+                            System.out.println(" Змініть назву магазину");
+                            scan.nextLine();
+                            String newName = scan.nextLine();
+                            shops.get(menuIndex-1).setShopName(newName);
+                            System.out.println("Готово!\n");
+                            break;
+
+                        case 3:
+                            System.out.println("Каталог магазину" + shops.get(menuIndex-1).getShopName()
+                                    +":" + shops.get(menuIndex-1).getCatalog());
+                            System.out.println("Готово!\n");
+                            break;
+                        case 4:
+                            System.out.println("Додайте бажану кількість товарів");
+                            int changeAmount = scan.nextInt();
+                            String item2 = scan.nextLine();
+                            String unit2 = scan.nextLine();
+                            String number2 = scan.nextLine();
+                            String price2 = scan.nextLine();
+                            String date2 = scan.nextLine();
+                            int k = 0;
+                            while ( k < changeAmount){
+                                item2 = scan.nextLine();
+                                unit2 = scan.nextLine();
+                                number2 = scan.nextLine();
+                                price2 = scan.nextLine();
+                                date2 = scan.nextLine();
+                                shops.get(menuIndex-1).setCatalog(item2,unit2, number2, price2, date2);
+                                k++;
+
+                            }
+                            System.out.println("Готово!\n");
+                            break;
+                        case 5:
+                            break;
+                        default:
+                            System.err.println("Помилкове введення опції!");
+                    }
+                    break;
+                case 5:
+                    String str = PathGetter.getPath(scan).toString();
+                    System.out.println("Серіалізація в XML...");
+                    System.out.println(str);
+                    try (
+                            XMLEncoder encoder = new XMLEncoder(
+                                    new BufferedOutputStream(
+                                            new FileOutputStream(str)))
+                    )
+                    {
+                        Integer size = shops.size();
+                        encoder.writeObject(size);
+                        for (Shop i: shops) {
+                            encoder.writeObject(i);
+                        }
+                    }
+                    catch (Exception exc){
+                        break;
+                    }
+                    System.out.print("Зроблено!\n");
+                    break;
+                case 6:
+                    System.out.println("Десеріалізація в об`єкт(и)...");
+                    try (XMLDecoder decoder = new XMLDecoder(
+                            new BufferedInputStream(
+                                    new FileInputStream(PathGetter.getPath(scan).toString())))
+                    )
+                    {
+                        Integer size = (Integer) decoder.readObject();
+                        shops = new ArrayList<>();
+                        for( int i = 0; i < size; i++){
+                            shops.add((Shop) decoder.readObject());
+                        }
+
+                    }
+                    catch (FileNotFoundException exception){
+                        System.err.println(exception.getMessage());
+                        break;
+                    }
+                    catch (NullPointerException e){
+                        System.err.println(e.getMessage());
+                        break;
+                    }
+                    break;
+
+                case 7:
+                    System.out.println("Процес завершено. Дякую за користування");
+                    System.exit(0);
+                default:
+                    System.err.println("Помилкове введення команди! Спробуйте ще");
+            }
+        }
+    }
+}
